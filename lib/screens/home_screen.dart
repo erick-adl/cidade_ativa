@@ -1,9 +1,6 @@
+import 'package:cidade_ativa/widgets/new_picture_button.dart';
 import 'package:flutter/material.dart';
 import 'package:cidade_ativa/tabs/home_tab.dart';
-import 'package:cidade_ativa/tabs/orders_tab.dart';
-import 'package:cidade_ativa/tabs/places_tab.dart';
-import 'package:cidade_ativa/tabs/products_tab.dart';
-import 'package:cidade_ativa/widgets/cart_button.dart';
 import 'package:cidade_ativa/widgets/custom_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,33 +16,8 @@ class HomeScreen extends StatelessWidget {
         Scaffold(
           body: HomeTab(),
           drawer: CustomDrawer(_pageController), 
-          floatingActionButton: CartButton(),
+          floatingActionButton: NewPictureButton(),
         ),
-        Scaffold(
-          appBar: AppBar(
-            title: Text("Produtos"),
-            centerTitle: true,
-          ),
-          drawer: CustomDrawer(_pageController),
-          body: ProductsTab(),
-          floatingActionButton: CartButton(),
-        ),
-        Scaffold(
-          appBar: AppBar(
-            title: Text("Lojas"),
-            centerTitle: true,
-          ),
-          body: PlacesTab(),
-          drawer: CustomDrawer(_pageController),
-        ),
-        Scaffold(
-          appBar: AppBar(
-            title: Text("Meus Pedidos"),
-            centerTitle: true,
-          ),
-          body: OrdersTab(),
-          drawer: CustomDrawer(_pageController),
-        )
       ],
     );
   }
