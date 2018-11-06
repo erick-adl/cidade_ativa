@@ -1,3 +1,4 @@
+import 'package:cidade_ativa/screens/home_screen.dart';
 import 'package:cidade_ativa/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cidade_ativa/models/user_model.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
               primaryColor: Color.fromARGB(255, 4, 125, 141)),
           debugShowCheckedModeBanner: false,
-          home: LoginScreen()),
+          home: HomeScreen()),
           
           
     );
