@@ -1,5 +1,5 @@
-import 'package:cidade_ativa/screens/signin_screen.dart';
-import 'package:cidade_ativa/screens/signup_screen.dart';
+import 'package:cidade_ativa/screens/login/signin_screen.dart';
+import 'package:cidade_ativa/screens/login/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen>
         child: PageView(
           controller: _controller,
           physics: new AlwaysScrollableScrollPhysics(),
-          children: <Widget>[SignInScreen(), HomePage(), SignUpScreen()],
+          children: <Widget>[SignInScreen(_controller), HomePage(), SignUpScreen(_controller)],
           scrollDirection: Axis.horizontal,
         ));
   }
@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen>
     _controller.animateToPage(
       0,
       duration: Duration(milliseconds: 800),
-      curve: Curves.bounceOut,
+      curve: Curves.decelerate,
     );
   }
 
@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen>
     _controller.animateToPage(
       2,
       duration: Duration(milliseconds: 800),
-      curve: Curves.bounceOut,
+      curve: Curves.decelerate,
     );
   }
 }
