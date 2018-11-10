@@ -1,158 +1,149 @@
-import 'package:cidade_ativa/screens/home_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:cidade_ativa/models/user_model.dart';
+import 'package:cidade_ativa/screens/signin_screen.dart';
 import 'package:cidade_ativa/screens/signup_screen.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginScreenState createState() => new _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController();
-  final _passController = TextEditingController();
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+  }
 
-  final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  PageController _controller =
+      new PageController(initialPage: 1, viewportFraction: 1.0);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(          
-          centerTitle: true,
-          actions: <Widget>[
-            FlatButton(
-              child: Text(
-                "CRIAR CONTA",
-                style: TextStyle(fontSize: 15.0),
-              ),
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => SignUpScreen()));
-              },
-            )
-          ],
-        ),
-        body: Stack(children: <Widget>[
-          Image.asset(
-            "assets/images/backgroud.png",
-            fit: BoxFit.fill,
-            width: 2000.0,
-          ),
-          Image.asset(
-            "assets/images/logo.png",
-            fit: BoxFit.fill,
-            width: 2000.0,
-          ),
-          ScopedModelDescendant<UserModel>(
-            builder: (context, child, model) {
-              if (model.isLoading)
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
+    return Container(
+        height: MediaQuery.of(context).size.height,
+        child: PageView(
+          controller: _controller,
+          physics: new AlwaysScrollableScrollPhysics(),
+          children: <Widget>[SignInScreen(), HomePage(), SignUpScreen()],
+          scrollDirection: Axis.horizontal,
+        ));
+  }
 
-              return Form(
-                key: _formKey,
-                child: ListView(
-                  padding: EdgeInsets.fromLTRB(16.0, 280.0, 16.0, 16.0),
+  Widget HomePage() {
+    return new Stack(
+      children: <Widget>[
+        Image.asset(
+          "assets/images/backgroud.png",
+          fit: BoxFit.fill,
+          width: 2000.0,
+        ),
+        Image.asset(
+          "assets/images/logo.png",
+          fit: BoxFit.fill,
+          width: 2000.0,
+        ),
+        SingleChildScrollView(
+          child: new Column(
+            children: <Widget>[
+              new Container(
+                padding: EdgeInsets.only(top: 250.0),
+                width: MediaQuery.of(context).size.width,
+                margin:
+                    const EdgeInsets.only(left: 30.0, right: 30.0, top: 150.0),
+                alignment: Alignment.center,
+                child: new Row(
                   children: <Widget>[
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: InputDecoration(hintText: "E-mail"),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (text) {
-                        if (text.isEmpty || !text.contains("@"))
-                          return "E-mail inválido!";
-                      },
-                    ),
-                    SizedBox(
-                      height: 16.0,
-                    ),
-                    TextFormField(
-                      controller: _passController,
-                      decoration: InputDecoration(hintText: "Senha"),
-                      obscureText: true,
-                      validator: (text) {
-                        if (text.isEmpty || text.length < 6)
-                          return "Senha inválida!";
-                      },
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: FlatButton(
-                        onPressed: () {
-                          if (_emailController.text.isEmpty)
-                            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              content:
-                                  Text("Insira seu e-mail para recuperação!"),
-                              backgroundColor: Colors.redAccent,
-                              duration: Duration(seconds: 2),
-                            ));
-                          else {
-                            model.recoverPass(_emailController.text);
-                            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              content: Text("Confira seu e-mail!"),
-                              backgroundColor: Theme.of(context).primaryColor,
-                              duration: Duration(seconds: 3),
-                            ));
-                          }
-                        },
-                        child: Text(
-                          "Esqueci minha senha",
-                          textAlign: TextAlign.right,
-                        ),
-                        padding: EdgeInsets.zero,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16.0,
-                    ),
-                    SizedBox(
-                      height: 44.0,
-                      child: RaisedButton(
-                        child: Text(
-                          "Entrar",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            
+                    new Expanded(
+                      child: new FlatButton(
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0)),
+                        color: Theme.of(context).primaryColor,
+                        onPressed: () => gotoLogin(),
+                        child: new Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 20.0,
+                            horizontal: 20.0,
+                          ),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              new Expanded(
+                                child: Text(
+                                  "ENTRAR",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        textColor: Colors.white,
-                        color: Theme.of(context).primaryColor,
-                        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(50.0)),
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            model.signIn(
-                                email: _emailController.text,
-                                pass: _passController.text,
-                                onSuccess: _onSuccess,
-                                onFail: _onFail);
-                          }
-                        },
                       ),
                     ),
                   ],
                 ),
-              );
-            },
-          )
-        ]));
+              ),
+              new Container(
+                width: MediaQuery.of(context).size.width,
+                margin:
+                    const EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
+                alignment: Alignment.center,
+                child: new Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: new FlatButton(
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0)),
+                        color: Theme.of(context).primaryColor,
+                        onPressed: () => gotoSignup(),
+                        child: new Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 20.0,
+                            horizontal: 20.0,
+                          ),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              new Expanded(
+                                child: Text(
+                                  "CADASTRAR",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
   }
 
-  void _onSuccess() {
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+  gotoLogin() {
+    //controller_0To1.forward(from: 0.0);
+    _controller.animateToPage(
+      0,
+      duration: Duration(milliseconds: 800),
+      curve: Curves.bounceOut,
+    );
   }
 
-  void _onFail() {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content:
-          Text("Falha ao Entrar. Verifique email e senha e tente novamente"),
-      backgroundColor: Colors.redAccent,
-      duration: Duration(seconds: 2),
-    ));
+  gotoSignup() {
+    //controller_minus1To0.reverse(from: 0.0);
+    _controller.animateToPage(
+      2,
+      duration: Duration(milliseconds: 800),
+      curve: Curves.bounceOut,
+    );
   }
 }

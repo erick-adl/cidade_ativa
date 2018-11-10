@@ -1,6 +1,6 @@
+import 'package:cidade_ativa/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cidade_ativa/models/user_model.dart';
-import 'package:cidade_ativa/screens/login_screen.dart';
 import 'package:cidade_ativa/tiles/drawer_tile.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -59,9 +59,7 @@ class CustomDrawer extends StatelessWidget {
                                     ),
                                     GestureDetector(
                                       child: Text(
-                                        !model.isLoggedIn()
-                                            ? "Entre ou cadastre-se >"
-                                            : "Sair",
+                                        "Sair",
                                         style: TextStyle(
                                             color:
                                                 Theme.of(context).primaryColor,
@@ -69,8 +67,8 @@ class CustomDrawer extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       onTap: () {
-                                        if (!model.isLoggedIn())
-                                          Navigator.of(context).push(
+                                        if (model.isLoggedIn())
+                                          Navigator.of(context).pushReplacement(
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       LoginScreen()));
@@ -87,7 +85,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                   Divider(),
                   DrawerTile(Icons.home, "Início", pageController, 0),
-                  DrawerTile(Icons.list, "Produtos", pageController, 1),
+                  DrawerTile(Icons.list, "Outros", pageController, 1),
                   // DrawerTile(Icons.location_on, "Lojas", pageController, 2),
                   // DrawerTile(
                   //     Icons.playlist_add_check, "Meus Pedidos", pageController, 3),
