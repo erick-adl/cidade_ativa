@@ -21,6 +21,17 @@ class _SignInScreenState extends State<SignInScreen> {
   final PageController controller;
   _SignInScreenState(this.controller);
 
+  final bool isReleaseMode = bool.fromEnvironment('dart.vm.product');
+
+  @override
+  void initState() {
+    super.initState();
+    if (!isReleaseMode) {
+      _emailController.text = "erick.adlima@gmail.com";
+      _passController.text = "12345678";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -137,6 +148,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void _onSuccess() {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+        
   }
 
   void _onFail() {

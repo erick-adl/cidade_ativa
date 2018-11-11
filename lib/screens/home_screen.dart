@@ -1,11 +1,9 @@
+import 'package:cidade_ativa/intro_page_view.dart';
 import 'package:cidade_ativa/widgets/fancy_fab.dart';
-import 'package:cidade_ativa/widgets/new_picture_button.dart';
 import 'package:flutter/material.dart';
-import 'package:cidade_ativa/tabs/home_tab.dart';
 import 'package:cidade_ativa/widgets/custom_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
-
   final _pageController = PageController();
 
   @override
@@ -15,9 +13,12 @@ class HomeScreen extends StatelessWidget {
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
         Scaffold(
-          body: HomeTab(),
-          drawer: CustomDrawer(_pageController), 
+          body: IntroPageView(),
+          drawer: CustomDrawer(_pageController),
           floatingActionButton: FancyFab(),
+          
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.endDocked,
         ),
       ],
     );
