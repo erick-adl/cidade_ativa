@@ -17,6 +17,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   final _addressController = TextEditingController();
+  final _ageController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -90,6 +91,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       height: 16.0,
                     ),
+                    TextFormField(
+                      controller: _ageController,
+                      decoration: InputDecoration(hintText: "Idade"),
+                      keyboardType: TextInputType.number,
+                      validator: (age) {
+                        if (int.parse(age) < 10 || int.parse(age) > 110)
+                          return "Idade invalida";
+                      },
+                    ),
+                    SizedBox(
+                      height: 16.0,
+                    ),
                     SizedBox(
                       height: 44.0,
                       child: RaisedButton(
@@ -108,7 +121,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Map<String, dynamic> userData = {
                               "name": _nameController.text,
                               "email": _emailController.text,
-                              "address": _addressController.text
+                              "address": _addressController.text,
+                              "age": int.parse(_ageController.text)
                             };
 
                             model.signUp(
@@ -135,7 +149,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       duration: Duration(seconds: 2),
     ));
     Future.delayed(Duration(seconds: 2)).then((_) {
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
+      this.controller.animateToPage(
+            0,
+            duration: Duration(milliseconds: 1000),
+            curve: Curves.bounceOut,
+          );
     });
   }
 
@@ -147,7 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     ));
   }
 
-  Future<Null> goBack() async{
+  Future<Null> goBack() async {
     await this.controller.animateToPage(
           1,
           duration: Duration(milliseconds: 1000),

@@ -16,9 +16,6 @@ class HomeScreen extends StatelessWidget {
           body: IntroPageView(),
           drawer: CustomDrawer(_pageController),
           floatingActionButton: FancyFab(),
-          
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.endDocked,
         ),
       ],
     );
