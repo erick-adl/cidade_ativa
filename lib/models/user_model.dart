@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
 
 class UserModel extends Model {
 
   FirebaseAuth _auth = FirebaseAuth.instance;
+  GoogleSignIn googleSignIn = new GoogleSignIn();
 
   FirebaseUser firebaseUser;
   Map<String, dynamic> userData = Map();
@@ -47,6 +49,34 @@ class UserModel extends Model {
       notifyListeners();
     });
 
+  }
+
+void signInGoogle(@required VoidCallback onSuccess, @required VoidCallback onFail) async {
+    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+    
+    // isLoading = true;
+    // notifyListeners();
+
+    _auth.signInWithGoogle(
+      idToken: googleSignInAuthentication.idToken,
+      accessToken: googleSignInAuthentication.accessToken
+    ).then(
+      (user) async {
+        firebaseUser = user;
+
+        await _loadCurrentUser();
+
+        onSuccess();
+        isLoading = false;
+        notifyListeners();
+
+    }).catchError((e){
+      onFail();
+      isLoading = false;
+      notifyListeners();
+    });  
+  
   }
 
   void signIn({@required String email, @required String pass,

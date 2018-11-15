@@ -62,7 +62,7 @@ class IntroPageItem extends StatelessWidget {
     );
 
     return Positioned(
-      bottom: 56.0,
+      bottom: 36.0,
       left: 32.0,
       right: 32.0,
       child: Column(
@@ -101,8 +101,8 @@ class IntroPageItem extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: 16.0,
-        horizontal: 8.0,
+        vertical: 6.0,
+        horizontal: 3.0,
       ),
       child: Material(
         elevation: 4.0,
