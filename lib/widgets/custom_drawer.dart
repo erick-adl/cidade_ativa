@@ -60,7 +60,7 @@ class CustomDrawer extends StatelessWidget {
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      GestureDetector(
+                                      InkWell(
                                         child: Text(
                                           "Sair",
                                           style: TextStyle(
@@ -70,16 +70,9 @@ class CustomDrawer extends StatelessWidget {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         onTap: () {
-                                          if (model.isLoggedIn())
-                                            Navigator.of(context)
-                                                .pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            LoginScreen()));
-                                          else
-                                            model.signOut();
+                                          _exit(context);
                                         },
-                                      )
+                                      ),
                                     ],
                                   );
                                 },
@@ -99,5 +92,72 @@ class CustomDrawer extends StatelessWidget {
             ),
           )),
     );
+  }
+
+  _exit(BuildContext context) {
+    AlertDialog ad = new AlertDialog(
+      content: Container(
+          height: 200.0,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(100.0)),
+          child: ScopedModelDescendant<UserModel>(
+            builder: (contex, child, model) {
+              return Column(
+                children: <Widget>[
+                  ClipOval(
+                    child: new Image.network(model.firebaseUser.photoUrl,
+                        width: 50.0, height: 50.0),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "Deseja fazer logoff?",
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      RaisedButton(
+                          child: Text(
+                            "Sim",
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            ),
+                          ),
+                          textColor: Colors.white,
+                          color: Theme.of(context).primaryColor,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0)),
+                          onPressed: () {
+                            model.signOut(context);
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()));
+                          }),
+                      RaisedButton(
+                          child: Text(
+                            "Não",
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            ),
+                          ),
+                          textColor: Colors.white,
+                          color: Theme.of(context).primaryColor,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0)),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ],
+                  )
+                ],
+              );
+            },
+          )),
+    );
+
+    showDialog(context: context, child: ad);
   }
 }
