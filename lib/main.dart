@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
           title: "Cidade Ativa",
           theme: ThemeData(
               primarySwatch: Colors.blue,
-              primaryColor: Color.fromARGB(255, 4, 125, 141)),
+              primaryColor: Color.fromARGB(255, 0, 191, 214)),
           debugShowCheckedModeBanner: false,
           home:  LoginScreen()),          
           

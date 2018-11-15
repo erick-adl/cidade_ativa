@@ -32,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-            title: Text("Dados cadastrais"),
+            title: Text("Dados cadastrais", style: TextStyle(color: Colors.white)),
             centerTitle: true,
           ),
           body: ScopedModelDescendant<UserModel>(

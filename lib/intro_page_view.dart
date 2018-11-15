@@ -15,7 +15,7 @@ class IntroPageView extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 0.0,
         flexibleSpace: FlexibleSpaceBar(
-          title: const Text("Cidade Ativa"),
+          title: const Text("Cidade Ativa", style: TextStyle(color: Colors.white)),
           centerTitle: true,
         ),
       ),

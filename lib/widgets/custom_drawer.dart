@@ -54,24 +54,30 @@ class CustomDrawer extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text(
-                                        "Olá, ${!model.isLoggedIn() ? "" : model.userData["name"]}",
-                                        style: TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      InkWell(
-                                        child: Text(
-                                          "Sair",
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        onTap: () {
-                                          _exit(context);
-                                        },
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: <Widget>[
+                                          ClipOval(
+                                            child: new Image.network(
+                                                model.firebaseUser.photoUrl,
+                                                width: 40.0,
+                                                height: 40.0),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 10.0),
+                                          ),
+                                          Text(
+                                            "Olá, ${!model.isLoggedIn() ? "" : model.userData["name"]}",
+                                            style: TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.grey[700]
+
+                                                ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   );
@@ -83,9 +89,37 @@ class CustomDrawer extends StatelessWidget {
                     Divider(),
                     DrawerTile(Icons.home, "Início", pageController, 0),
                     DrawerTile(Icons.list, "Outros", pageController, 1),
-                    // DrawerTile(Icons.location_on, "Lojas", pageController, 2),
-                    // DrawerTile(
-                    //     Icons.playlist_add_check, "Meus Pedidos", pageController, 3),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          _exit(context);
+                        },
+                        child: Container(
+                          height: 60.0,
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.exit_to_app,
+                                size: 32.0,
+                                color: Colors.grey[700]
+                                    
+                              ),
+                              SizedBox(
+                                width: 32.0,
+                              ),
+                              Text(
+                                "Sair",
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.grey[700]
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),                    
                   ],
                 )
               ],
