@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cidade_ativa/screens/login/login_screen.dart';
+import 'package:cidade_ativa/widgets/color_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:cidade_ativa/models/user_model.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -25,6 +26,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final PageController controller;
   _SignUpScreenState(this.controller);
 
+  final bool isReleaseMode = bool.fromEnvironment('dart.vm.product');
+
+  @override
+  void initState() {
+    super.initState();
+    if (!isReleaseMode) {
+      _emailController.text = "erick.adlima@gmail.com";
+      _passController.text = "12345678";
+      _nameController.text = "Erick Anjos de Lima";
+      _addressController.text = "Nova Espnha 77";
+      _ageController.text = "28";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return new WillPopScope(
@@ -32,14 +47,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-            title: Text("Dados cadastrais", style: TextStyle(color: Colors.white)),
+            title:
+                Text("Dados cadastrais", style: TextStyle(color: Colors.white)),
             centerTitle: true,
           ),
           body: ScopedModelDescendant<UserModel>(
             builder: (context, child, model) {
               if (model.isLoading)
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: ColorLoader(),
                 );
 
               return Form(

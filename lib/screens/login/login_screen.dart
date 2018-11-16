@@ -2,6 +2,7 @@ import 'package:cidade_ativa/models/user_model.dart';
 import 'package:cidade_ativa/screens/home/home_screen.dart';
 import 'package:cidade_ativa/screens/login/signin_screen.dart';
 import 'package:cidade_ativa/screens/login/signup_screen.dart';
+import 'package:cidade_ativa/widgets/color_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen>
           child: new Column(
             children: <Widget>[
               new Container(
-                padding: EdgeInsets.only(top: 160.0),
+                padding: EdgeInsets.only(top: 180.0),
                 width: MediaQuery.of(context).size.width,
                 margin:
                     const EdgeInsets.only(left: 30.0, right: 30.0, top: 150.0),
@@ -135,15 +136,15 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
               ),
               new Container(
-                width: MediaQuery.of(context).size.width,                
+                width: MediaQuery.of(context).size.width,
                 margin:
                     const EdgeInsets.only(left: 30.0, right: 30.0, top: 30.0),
                 alignment: Alignment.center,
                 child: ScopedModelDescendant<UserModel>(
                     builder: (context, child, model) {
                   if (model.isLoading)
-                    return Center(                      
-                      child: CircularProgressIndicator(),
+                    return Center(
+                      child: ColorLoader(),
                     );
 
                   return Row(children: <Widget>[
@@ -166,8 +167,8 @@ class _LoginScreenState extends State<LoginScreen>
                               Image.asset(
                                 "assets/images/icon_google.png",
                                 fit: BoxFit.scaleDown,
-                                width: 20.0,
-                                height: 20.0,
+                                width: 15.0,
+                                height: 15.0,
                               ),
                               new Expanded(
                                 child: Text(
@@ -175,7 +176,8 @@ class _LoginScreenState extends State<LoginScreen>
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13.0),
                                 ),
                               ),
                             ],

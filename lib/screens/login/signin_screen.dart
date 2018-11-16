@@ -1,4 +1,5 @@
 import 'package:cidade_ativa/screens/home/home_screen.dart';
+import 'package:cidade_ativa/widgets/color_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:cidade_ativa/models/user_model.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -42,49 +43,35 @@ class _SignInScreenState extends State<SignInScreen> {
             Image.asset(
               "assets/images/backgroud.png",
               fit: BoxFit.fill,
-              width: 2000.0,
-            ),
-            Image.asset(
-              "assets/images/logo.png",
-              fit: BoxFit.fill,
-              width: 2000.0,
+              width: 1000.0,
             ),
             ScopedModelDescendant<UserModel>(
               builder: (context, child, model) {
                 if (model.isLoading)
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: ColorLoader(),
                   );
 
                 return Form(
                   key: _formKey,
                   child: ListView(
-                    padding: EdgeInsets.fromLTRB(16.0, 280.0, 16.0, 16.0),
+                    padding: EdgeInsets.fromLTRB(6.0, 30.0, 6.0, 16.0),
                     children: <Widget>[
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(hintText: "E-mail"),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (text) {
-                          if (text.isEmpty || !text.contains("@"))
-                            return "E-mail inválido!";
-                        },
+                      Image.asset(
+                        "assets/images/logo.png",
+                        width: 2000.0,
                       ),
-                      SizedBox(
-                        height: 16.0,
-                      ),
-                      TextFormField(
-                        controller: _passController,
-                        decoration: InputDecoration(hintText: "Senha"),
-                        obscureText: true,
-                        validator: (text) {
-                          if (text.isEmpty || text.length < 6)
-                            return "Senha inválida!";
-                        },
-                      ),
+                      _buildFormFild(Icons.person_outline, 'E-mail', (text) {
+                        if (text.isEmpty || !text.contains("@"))
+                          return "E-mail inválido!";
+                      }, _emailController, false),
+                      _buildFormFild(Icons.lock_outline, 'Password', (text) {
+                        if (text.isEmpty || text.length < 6)
+                          return "Senha inválida!";
+                      }, _passController, true),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: FlatButton(
+                        child: FlatButton(                          
                           onPressed: () {
                             if (_emailController.text.isEmpty)
                               _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -102,9 +89,12 @@ class _SignInScreenState extends State<SignInScreen> {
                               ));
                             }
                           },
-                          child: Text(
-                            "Esqueci minha senha",
-                            textAlign: TextAlign.right,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: Text(                            
+                              "Esqueci minha senha",
+                              textAlign: TextAlign.right,
+                            ),
                           ),
                           padding: EdgeInsets.zero,
                         ),
@@ -112,28 +102,31 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(
                         height: 16.0,
                       ),
-                      SizedBox(
-                        height: 44.0,
-                        child: RaisedButton(
-                          child: Text(
-                            "Entrar",
-                            style: TextStyle(
-                              fontSize: 18.0,
+                      Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: SizedBox(
+                          height: 44.0,                        
+                          child: RaisedButton(                          
+                            child: Text(
+                              "Entrar",
+                              style: TextStyle(
+                                fontSize: 18.0,
+                              ),
                             ),
+                            textColor: Colors.white,
+                            color: Theme.of(context).primaryColor,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0)),
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                model.signIn(
+                                    email: _emailController.text,
+                                    pass: _passController.text,
+                                    onSuccess: _onSuccess,
+                                    onFail: _onFail);
+                              }
+                            },
                           ),
-                          textColor: Colors.white,
-                          color: Theme.of(context).primaryColor,
-                          shape: new RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
-                          onPressed: () {
-                            if (_formKey.currentState.validate()) {
-                              model.signIn(
-                                  email: _emailController.text,
-                                  pass: _passController.text,
-                                  onSuccess: _onSuccess,
-                                  onFail: _onFail);
-                            }
-                          },
                         ),
                       ),
                     ],
@@ -145,10 +138,56 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  Widget _buildFormFild(
+      @required IconData icon,
+      @required String hint,
+      @required Function formFieldValidator,
+      @required TextEditingController controller,
+      @required bool textObcure) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey.withOpacity(0.5),
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      child: Row(
+        children: <Widget>[
+          new Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
+            child: Icon(
+              icon,
+              color: Colors.grey,
+            ),
+          ),
+          Container(
+            height: 30.0,
+            width: 1.0,
+            color: Colors.grey.withOpacity(0.5),
+            margin: const EdgeInsets.only(left: 00.0, right: 10.0),
+          ),
+          new Expanded(
+            child: TextFormField(
+              obscureText: textObcure,
+              controller: controller,
+              validator: formFieldValidator,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: hint,
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   void _onSuccess() {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
-        
   }
 
   void _onFail() {

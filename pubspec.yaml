@@ -44,6 +44,10 @@ flutter:
    - assets/2.png
    - assets/3.png   
   
+   - assets/images/full-bloom.png
+   - assets/images/mountains.jpeg
+   - assets/images/mountains.jpg
+
   fonts:
     - family: Billabong
       fonts:
@@ -55,3 +59,7 @@ flutter:
           style: normal
         - asset: assets/fonts/AvenyTMedium.otf
           style: italic
+
+    - family: icomoon
+      fonts:
+        - asset: assets/fonts/IcoMoon.ttf
